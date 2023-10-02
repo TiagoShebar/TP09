@@ -1,0 +1,21 @@
+
+<form action='@Url.Action("VerificarLogin", new{ NombreUsuario, Password })' method="post">
+    <div>
+        <h2>Nombre de Usuario</h2>
+        <input type="text" name="NombreUsuario" autocomplete="off" required>
+    </div>
+    <div>
+        <h2>Contrasena</h2>
+        <input type="text" name="Password" autocomplete="off" required>
+    </div>
+    
+    <div>
+        <input type="submit" value="Enviar Datos">
+    </div>
+</form>
+
+
+
+<a href='@Url.Action("Registro")'>Registrarse</a>
+
+<a href='@Url.Action("Olvide")'>Olvide</a>
