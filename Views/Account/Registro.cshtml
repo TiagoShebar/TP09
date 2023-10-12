@@ -1,0 +1,51 @@
+
+<form id="registroForm" action='@Url.Action("GuardarUsuario")' method="post" onsubmit="return ValidarFormularioRegistro(event)">
+    <div>
+        <h2>Nombre de Usuario</h2>
+        <input type="text" name="NombreUsuario" autocomplete="off" required>
+    </div>
+    <div>
+        <h2>Contrasena</h2>
+        <input type="password" name="Password" autocomplete="off" required onkeyup="VerificarPassword(this.value)">
+        <div id="mensajePassword"></div>
+    </div>
+    <div>
+        <h2>Confirmar contrasena</h2>
+        <input type="password" name="Password2" autocomplete="off" required onkeyup="VerificarIgualdad(this.value)">
+        <div id="mensajePassword2"></div>
+    </div>
+    <div>
+        <h2>Nombre</h2>
+        <input type="text" name="Nombre" autocomplete="off" required>
+    </div>
+    <div>
+        <h2>Email</h2>
+        <input type="text" name="Email" autocomplete="off" required>
+        <p>@ViewBag.EmailExiste</p>
+    </div>
+    <div>
+        <h2>Telefono</h2>
+        <input type="text" name="Telefono" autocomplete="off">
+    </div>
+    <div>
+        <h2>Pregunta</h2>
+        <select name="IdPregunta" autocomplete="off" required>
+        @if (ViewBag.ListaPreguntas != null)
+        {
+            foreach (var pregunta in ViewBag.ListaPreguntas)
+            {
+                <option value="@pregunta.IdPregunta">@pregunta.PreguntaTexto</option>
+            }
+        }   
+        </select>
+    </div>
+    <div>
+        <h2>Respuesta</h2>
+        <input type="password" name="Respuesta" autocomplete="off" required>
+    </div>
+    <div>
+        <input type="submit" value="Enviar Datos">
+    </div>
+    <p>@ViewBag.NombreUsuarioExisteOMail</p>
+</form>
+
