@@ -1,21 +1,23 @@
-
-<form action='@Url.Action("VerificarLogin", new{ NombreUsuario, Password })' method="post">
-    <div>
-        <h2>Nombre de Usuario</h2>
-        <input type="text" name="NombreUsuario" autocomplete="off" required>
+<div class="center-block">
+    <div class="div-center">
+        <form action='@Url.Action("ValidarLogin")' class="form-center" method="post">
+        <h1 style="margin-bottom:5%; color: white;"><b>Login</b></h1>
+            <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" name="NombreUsuario" autocomplete="off" placeholder="Nombre de usuario" required>
+            <label for="floatingInput">Nombre de usuario</label>  
+            </div>
+            <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" name="Password" placeholder="Password" required>
+            <label for="floatingPassword">Password</label>
+            </div>
+            <a href='@Url.Action("Olvide")' style="float: left; color: white;">¿Olvidaste tu contrasena?</a>
+            <div class="col-12" style="float:right; margin-top: 8%; margin-bottom: 2%;">
+                <button class="btn btn-primary" style="background-color: #fb4"type="submit">Ingresar</button><br>
+                <p style="color: white;margin-top: 2%;">¿No tienes una cuenta? <a href='@Url.Action("Registro")' style="color: white;">Registrate</a></p>
+            </div><br>
+        </form><br>
+        @if(ViewBag.ErrorLogin != null){
+            <p class="alert alert-danger" role="alert" style="width: 80%; margin: 0 auto;margin-top: 7%">@ViewBag.ErrorLogin</p>
+        }
     </div>
-    <div>
-        <h2>Contrasena</h2>
-        <input type="text" name="Password" autocomplete="off" required>
-    </div>
-    
-    <div>
-        <input type="submit" value="Enviar Datos">
-    </div>
-</form>
-
-
-
-<a href='@Url.Action("Registro")'>Registrarse</a>
-
-<a href='@Url.Action("Olvide")'>Olvide</a>
+</div>
