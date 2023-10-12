@@ -1,0 +1,33 @@
+<form id="registroForm" action='@Url.Action("ValidarOlvido")' method="post" onsubmit="return ValidarFormularioOlvide(event)">
+    <div>
+        <h2>Email</h2>
+        <input type="text" name="Email" autocomplete="on" required>
+    </div>
+    <div>
+        <h2>Pregunta</h2>
+        <select name="IdPregunta" autocomplete="off" required>
+        @if (ViewBag.ListaPreguntas != null)
+        {
+            foreach (var pregunta in ViewBag.ListaPreguntas)
+            {
+                <option value="@pregunta.IdPregunta">@pregunta.PreguntaTexto</option>
+            }
+        }   
+        </select>
+    </div>
+    <div>
+        <h2>Respuesta</h2>
+        <input type="text" name="Respuesta" autocomplete="off" required>
+    </div>
+    <div>
+        <h2>Ingrese la nueva contrasena</h2>
+        <input type="password" name="NewPassword" autocomplete="off" required onkeyup="VerificarPassword(this.value)">
+        <div id="mensajePassword"></div>
+    </div>
+    <div>
+        <input type="submit" value="Enviar Datos">
+    </div>
+    <p>@ViewBag.ErrorOlvidado</p>
+</form>
+
+<a href='@Url.Action("Login")'>Login</a>
