@@ -1,87 +1,69 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TP09.Controllers;
 
-public class HomeController : Controller
+public class AccountController : Controller
 {
     public IActionResult Login()
-    {
+    {  
+        ViewBag.ErrorLogin = null;
         return View();
     }
 
-    public IActionResult VerificarLogin(string NombreUsuario, string Password){
-        int i = 0;
-        ViewBag.Igual = true;
-        bool nombreUsarioIne = true;
-        List<Usuario> ListaUsuarios = BD.ListarUsuarios();
-
-        while(i < ListaUsuarios.Count && ViewBag.Igual){
-           
-            if(ListaUsuarios[i].NombreUsuario == NombreUsuario){
-                nombreUsarioIne = true;
-                if(ListaUsuarios[i].Password != Password){
-                    ViewBag.Igual = false;
-                }
-            }
-            else{
-                nombreUsarioIne = false;
-            }
-            
-            i++;
-        }
-
-        if(nombreUsarioIne && ViewBag.Igual){
-            return RedirectToAction("Bienvenida, { us.NombreUsuario }");
-        }
-        else{
+    public IActionResult ValidarLogin(string NombreUsuario, string Password)
+    {
+        Usuario usuario = BD.EncontrarUsuario(NombreUsuario, Password);
+        if (usuario == null)
+        {
+            ViewBag.ErrorLogin = "Nombre de usuario o contraseña incorrectas";
             return View("Login");
         }
+        else
+        {
+            ViewBag.Usuario = usuario;
+            return View("Bienvenida");
+        }
     }
 
-    public IActionResult VerificarRegistro(Usuario us){
-        List<Usuario> ListaUsuarios = BD.ListarUsuarios();
-        int i = 0;
-        ViewBag.NUIgual = false;
-        ViewBag.EIgual = false;
-        while(i < ListaUsuarios.Count && !ViewBag.NUIgual && !ViewBag.PIgual){
-            if(ListaUsuarios[i].NombreUsuario == us.NombreUsuario){
-                ViewBag.NUIgual = true;
+
+
+    public IActionResult Registro(){
+        ViewBag.ListaPreguntas = BD.ListarPreguntas();
+        ViewBag.NombreUsuarioExisteOMail = null;
+        return View();
+    }
+
+    [HttpPost]
+        public IActionResult GuardarUsuario(Usuario us)
+        {
+            if (!BD.AgregarUsuario(us)) 
+            {
+                ViewBag.NombreUsuarioExisteOMail = "Ya existe el nombre de usuario o el mail está vinculado a una cuenta";
+                ViewBag.ListaPreguntas = BD.ListarPreguntas();
+                return View("Registro");
             }
-            if(ListaUsuarios[i].Email == us.Email){
-                ViewBag.EIgual = true;
+            else
+            {
+                return View("Login");
             }
-            i++;
         }
-        if(i == ListaUsuarios.Count){
-           return RedirectToAction("GuardarUsuario , { us }"); 
+
+
+    public IActionResult Olvide(){
+        ViewBag.ListaPreguntas = BD.ListarPreguntas();
+        return View();
+    }
+
+    public IActionResult ValidarOlvido(string Email, int IdPregunta, string Respuesta, string NewPassword)
+    {
+        if(BD.OlvidePassword(Email, IdPregunta, Respuesta, NewPassword)){
+            return View("Login");
         }
         else{
-            return View("Registro");
+            ViewBag.ErrorOlvidado = "Error. No hay ninguna cuenta registrada con ese mail, o la respuesta es incorrecta";
+            ViewBag.ListaPreguntas = BD.ListarPreguntas();
+            return View("Olvide");
         }
-        
     }
-
-    public IActionResult AgregarUsuario(){
-        return View();
-    }
-
-    [HttpPost] public IActionResult GuardarUsuario(Usuario us){
-        BD.AgregarUsuario(us);
-        return View("Login");
-    }
-
-    public IActionResult Olvide(string Email, string PreguntaPersonal)
-    {
-        ViewBag.PasswordOlvidado = BD.OlvideContraseña(Email, PreguntaPersonal);
-        return View();
-    }
-
-    public IActionResult Bienvenida(string NombreUsuario){
-
-        return View();
-    }
-
-
-
 
 }
