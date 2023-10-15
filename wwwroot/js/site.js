@@ -1,4 +1,4 @@
-function ValidarFormularioOlvide(event) {
+﻿function ValidarFormularioOlvide(event) {
     event.preventDefault();
 
     let passwordInput = document.getElementsByName("NewPassword")[0].value;
